@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amoo Bridge — 把手机上的 Amoo 接到电脑</title>
+  <meta name="description" content="Amoo Bridge 把手机上的 Amoo 接到 Windows 电脑，支持 OpenAI 兼容客户端与可选的 MCP 工具。">
+  <style>
+    :root {
+      --bg: #f5f3ee;
+      --card: #ffffff;
+      --ink: #1f2320;
+      --muted: #6f756d;
+      --line: #e0dbd0;
+      --green: #2f6b4f;
+      --green-dark: #255840;
+      --sand: #ece8df;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
+      line-height: 1.65;
+    }
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { width: min(980px, calc(100% - 40px)); margin: 0 auto; }
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(245, 243, 238, .92);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(10px);
+      z-index: 2;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0;
+    }
+    .brand { font-size: 18px; font-weight: 700; letter-spacing: .2px; }
+    .brand span { color: var(--green); }
+    .nav-links { display: flex; gap: 18px; font-size: 14px; color: var(--muted); }
+    .nav-links a { color: var(--muted); }
+    .nav-links a:hover { color: var(--green); }
+    .hero { padding: 72px 0 54px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--green);
+      background: #e7efe9;
+      border-radius: 999px;
+      padding: 6px 12px;
+      margin-bottom: 18px;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+    h1 {
+      font-size: clamp(34px, 6vw, 56px);
+      line-height: 1.15;
+      letter-spacing: -.03em;
+      margin: 0 0 18px;
+      max-width: 760px;
+    }
+    .lead {
+      font-size: clamp(16px, 2.2vw, 20px);
+      color: var(--muted);
+      max-width: 680px;
+      margin: 0 0 30px;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: var(--green); color: #fff; }
+    .btn-primary:hover { background: var(--green-dark); text-decoration: none; }
+    .btn-ghost { border-color: var(--line); background: var(--card); color: var(--ink); }
+    .btn-ghost:hover { border-color: #cfc8b9; text-decoration: none; }
+    .status {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+    section { padding: 42px 0; }
+    .section-head { margin-bottom: 22px; }
+    .section-head h2 { font-size: 26px; margin: 0 0 6px; letter-spacing: -.02em; }
+    .section-head p { margin: 0; color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 22px;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 17px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .step { background: var(--sand); border-radius: 10px; padding: 20px; }
+    .step b {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .step p { margin: 0; color: var(--ink); font-size: 14px; }
+    .buy {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 28px;
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: center;
+    }
+    .buy h2 { margin: 0 0 6px; font-size: 24px; }
+    .buy p { margin: 0; color: var(--muted); max-width: 620px; }
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      color: #8a5a1c;
+      background: #f6ead8;
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-bottom: 10px;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 26px 0 40px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 760px) {
+      .grid, .steps { grid-template-columns: 1fr; }
+      .buy { flex-direction: column; align-items: flex-start; }
+      .nav-links { display: none; }
+      .hero { padding-top: 50px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="brand">Amoo <span>Bridge</span></div>
+        <div class="nav-links">
+          <a href="#features">功能</a>
+          <a href="#start">开始使用</a>
+          <a href="#buy">购买与授权</a>
+          <a href="https://github.com/matreshka15/amoo-bridge-site/discussions">社区</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span> Windows 10 / 11 · 本地运行</div>
+      <h1>把手机上的 Amoo<br>接到这台电脑。</h1>
+      <p class="lead">
+        Amoo Bridge 在本机开一个网关，让 Chatbox、Cherry Studio、WorkBuddy 等客户端
+        直接使用手机上的 Amoo。也可以按需接入 MCP，把手机能力当成工具调用。
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#buy">购买与授权</a>
+        <a class="btn btn-ghost" href="#features">看看功能</a>
+      </div>
+      <div class="status">当前为产品信息页；购买入口和授权流程正在配置。</div>
+    </section>
+
+    <section id="features">
+      <div class="section-head">
+        <h2>三种用法，按需要选</h2>
+        <p>普通聊天只需要模型地址；MCP 是给进阶用户的，不用不装。</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3>OpenAI 兼容端点</h3>
+          <p>在任意支持 OpenAI 接口的客户端里填三行：Base URL、API Key、模型名。</p>
+        </article>
+        <article class="card">
+          <h3>MCP（可选）</h3>
+          <p>让 WorkBuddy / Claude Desktop 直接查手机会话、读历史、发消息。普通聊天不需要。</p>
+        </article>
+        <article class="card">
+          <h3>本地网关</h3>
+          <p>只监听 127.0.0.1，不经过第三方服务器；托盘常驻，断线自动重连。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="start">
+      <div class="section-head">
+        <h2>三步开始</h2>
+        <p>不用记命令，跟着向导点就行。</p>
+      </div>
+      <div class="steps">
+        <div class="step"><b>1</b><p>手机用数据线连电脑，打开 USB 调试并允许这台电脑。</p></div>
+        <div class="step"><b>2</b><p>桌面端点“一键连接手机”，等待网关启动。</p></div>
+        <div class="step"><b>3</b><p>在“模型”页复制三行地址，粘贴到聊天客户端。</p></div>
+      </div>
+    </section>
+
+    <section id="buy">
+      <div class="buy">
+        <div>
+          <div class="tag">即将开放</div>
+          <h2>购买与授权</h2>
+          <p>
+            正在配置商品、试用和授权交付流程。完成后这里会显示价格、购买入口和售后说明。
+            现在可以先在 Discussions 关注上线通知。
+          </p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://github.com/matreshka15/amoo-bridge-site/discussions">关注上线通知</a>
+          <a class="btn btn-ghost" href="https://github.com/matreshka15/amoo-bridge-site/issues">反馈问题</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>说明</h2>
+        <p>这个仓库只放产品信息、FAQ、更新日志和社区模板。</p>
+      </div>
+      <div class="card">
+        <p>
+          源码仓库为私有，安装包通过授权渠道交付，不在此仓库公开。
+          手机端需要已安装 Amoo；Amoo Bridge 不修改手机系统，也不要求 root。
+          第三方组件遵循各自许可证。
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © 2026 Amoo Bridge. All rights reserved. ·
+      <a href="https://github.com/matreshka15/amoo-bridge-site">GitHub</a> ·
+      <a href="https://github.com/matreshka15/amoo-bridge-site/discussions">Discussions</a>
+    </div>
+  </footer>
+</body>
+</html>

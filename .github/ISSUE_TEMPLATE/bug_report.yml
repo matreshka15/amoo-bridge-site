@@ -1,0 +1,71 @@
+name: Bug 报告
+description: 报告 Amoo Bridge 的连接、使用或显示问题
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。提交前请先看 Discussions 的常见问题；**不要粘贴 API Key、授权码、订单号或含个人内容的日志**。
+  - type: input
+    id: version
+    attributes:
+      label: Amoo Bridge 版本
+      placeholder: 例如 3.7.0（窗口右上角）
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows 版本
+      placeholder: 例如 Windows 11 23H2
+    validations:
+      required: true
+  - type: input
+    id: phone
+    attributes:
+      label: 手机型号与 Android 版本
+      placeholder: 例如 小米 14 / Android 14
+    validations:
+      required: true
+  - type: dropdown
+    id: connection
+    attributes:
+      label: 连接方式
+      options:
+        - USB 数据线
+        - 无线 ADB
+        - 还没连上
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 从打开软件开始，按顺序写清楚点了什么
+      placeholder: |
+        1. 打开 Amoo Bridge
+        2. 点“一键连接手机”
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际结果
+      description: 有报错截图可以直接拖进来；日志请先删掉密钥和个人内容
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认
+      options:
+        - label: 我确认没有在内容里粘贴 API Key、授权码、订单号或他人隐私
+          required: true

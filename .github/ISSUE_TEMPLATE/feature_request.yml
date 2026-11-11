@@ -1,0 +1,39 @@
+name: 功能建议
+description: 提出新功能或使用体验改进
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先说清楚“你在什么场景下想做什么”，不用先想实现方案。
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你遇到的问题或场景
+      placeholder: 例如：每次换电脑都要重新找手机驱动，太麻烦
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: 你希望怎么解决
+    validations:
+      required: true
+  - type: dropdown
+    id: importance
+    attributes:
+      label: 对你的重要程度
+      options:
+        - 没有也能用
+        - 会影响日常使用
+        - 阻碍我使用
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认
+      options:
+        - label: 我确认没有粘贴 API Key、授权码、订单号或他人隐私
+          required: true
