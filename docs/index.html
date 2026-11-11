@@ -1,264 +1,687 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Amoo Bridge — 把手机上的 Amoo 接到电脑</title>
-  <meta name="description" content="Amoo Bridge 把手机上的 Amoo 接到 Windows 电脑，支持 OpenAI 兼容客户端与可选的 MCP 工具。">
-  <style>
-    :root {
-      --bg: #f5f3ee;
-      --card: #ffffff;
-      --ink: #1f2320;
-      --muted: #6f756d;
-      --line: #e0dbd0;
-      --green: #2f6b4f;
-      --green-dark: #255840;
-      --sand: #ece8df;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
-      line-height: 1.65;
-    }
-    a { color: var(--green); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .wrap { width: min(980px, calc(100% - 40px)); margin: 0 auto; }
-    header {
-      border-bottom: 1px solid var(--line);
-      background: rgba(245, 243, 238, .92);
-      position: sticky;
-      top: 0;
-      backdrop-filter: blur(10px);
-      z-index: 2;
-    }
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 16px 0;
-    }
-    .brand { font-size: 18px; font-weight: 700; letter-spacing: .2px; }
-    .brand span { color: var(--green); }
-    .nav-links { display: flex; gap: 18px; font-size: 14px; color: var(--muted); }
-    .nav-links a { color: var(--muted); }
-    .nav-links a:hover { color: var(--green); }
-    .hero { padding: 72px 0 54px; }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--green);
-      background: #e7efe9;
-      border-radius: 999px;
-      padding: 6px 12px;
-      margin-bottom: 18px;
-    }
-    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
-    h1 {
-      font-size: clamp(34px, 6vw, 56px);
-      line-height: 1.15;
-      letter-spacing: -.03em;
-      margin: 0 0 18px;
-      max-width: 760px;
-    }
-    .lead {
-      font-size: clamp(16px, 2.2vw, 20px);
-      color: var(--muted);
-      max-width: 680px;
-      margin: 0 0 30px;
-    }
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-    .btn {
-      display: inline-block;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 15px;
-      border: 1px solid transparent;
-    }
-    .btn-primary { background: var(--green); color: #fff; }
-    .btn-primary:hover { background: var(--green-dark); text-decoration: none; }
-    .btn-ghost { border-color: var(--line); background: var(--card); color: var(--ink); }
-    .btn-ghost:hover { border-color: #cfc8b9; text-decoration: none; }
-    .status {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 14px;
-    }
-    section { padding: 42px 0; }
-    .section-head { margin-bottom: 22px; }
-    .section-head h2 { font-size: 26px; margin: 0 0 6px; letter-spacing: -.02em; }
-    .section-head p { margin: 0; color: var(--muted); }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 22px;
-    }
-    .card h3 { margin: 0 0 8px; font-size: 17px; }
-    .card p { margin: 0; color: var(--muted); font-size: 14px; }
-    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .step { background: var(--sand); border-radius: 10px; padding: 20px; }
-    .step b {
-      display: inline-grid;
-      place-items: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--green);
-      color: #fff;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-    .step p { margin: 0; color: var(--ink); font-size: 14px; }
-    .buy {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 28px;
-      display: flex;
-      justify-content: space-between;
-      gap: 24px;
-      align-items: center;
-    }
-    .buy h2 { margin: 0 0 6px; font-size: 24px; }
-    .buy p { margin: 0; color: var(--muted); max-width: 620px; }
-    .tag {
-      display: inline-block;
-      font-size: 12px;
-      color: #8a5a1c;
-      background: #f6ead8;
-      border-radius: 999px;
-      padding: 4px 10px;
-      margin-bottom: 10px;
-    }
-    footer {
-      border-top: 1px solid var(--line);
-      padding: 26px 0 40px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    @media (max-width: 760px) {
-      .grid, .steps { grid-template-columns: 1fr; }
-      .buy { flex-direction: column; align-items: flex-start; }
-      .nav-links { display: none; }
-      .hero { padding-top: 50px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Amoo Bridge — 把手机上的 Amoo 接到这台电脑</title>
+<meta name="description" content="Amoo Bridge 是一个 Windows 桌面小工具：用 USB 把手机上的 Amoo 接到电脑，在本机开网关，Chatbox、Cherry Studio、WorkBuddy 等 OpenAI 兼容客户端填三行就能用。">
+<style>
+  :root{
+    --cream:#FAF4EA;
+    --paper:#FFFCF7;
+    --ink:#25201B;
+    --muted:#6B5F55;
+    --line:#E6DACA;
+    --green:#2F6B4F;
+    --green-deep:#255741;
+    --green-mist:#E8F0E9;
+    --terra:#B96A42;
+    --radius:18px;
+    --shadow:0 18px 50px -28px rgba(58,42,28,.35);
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{
+    margin:0;background:var(--cream);color:var(--ink);
+    font-family:var(--font);font-size:17px;line-height:1.75;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  a{color:var(--green-deep);text-decoration:none}
+  a:hover{text-decoration:underline}
+  img{max-width:100%;height:auto;display:block}
+  .wrap{width:min(1120px,calc(100% - 48px));margin:0 auto}
+  .skip{position:absolute;left:-9999px;top:0;background:var(--green);color:#fff;padding:10px 16px;border-radius:0 0 10px 0;z-index:100}
+  .skip:focus{left:0}
+  :focus-visible{outline:3px solid var(--terra);outline-offset:3px;border-radius:4px}
+
+  /* ---------- header ---------- */
+  .site-head{
+    position:sticky;top:0;z-index:50;
+    background:rgba(250,244,234,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .head-in{display:flex;align-items:center;gap:28px;height:68px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--ink)}
+  .brand:hover{text-decoration:none}
+  .mark{width:32px;height:32px;border-radius:9px;background:var(--green);display:grid;place-items:center;flex:0 0 auto}
+  .nav{display:flex;gap:26px;margin-left:auto;font-size:15px}
+  .nav a{color:var(--muted)}
+  .nav a:hover{color:var(--ink);text-decoration:none}
+  .head-cta{
+    margin-left:6px;background:var(--green);color:#fff;font-size:15px;font-weight:600;
+    padding:9px 18px;border-radius:999px;transition:background .2s;
+  }
+  .head-cta:hover{background:var(--green-deep);text-decoration:none}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;overflow:hidden;
+    padding:84px 0 76px;
+    background:
+      radial-gradient(900px 420px at 78% -10%, rgba(47,107,79,.10), transparent 60%),
+      radial-gradient(700px 360px at 8% 10%, rgba(185,106,66,.08), transparent 60%);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}
+  h1{
+    font-size:clamp(34px,4.4vw,56px);line-height:1.18;letter-spacing:-.02em;
+    margin:0 0 20px;font-weight:800;
+  }
+  h1 em{font-style:normal;color:var(--green);position:relative;white-space:nowrap}
+  h1 em::after{
+    content:"";position:absolute;left:0;right:0;bottom:.06em;height:.28em;
+    background:rgba(47,107,79,.14);border-radius:.14em;z-index:-1;
+  }
+  .lede{font-size:19px;color:var(--muted);max-width:33em;margin:0 0 30px}
+  .lede strong{color:var(--ink);font-weight:600}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-size:16px;font-weight:600;padding:13px 24px;border-radius:999px;
+    transition:transform .15s,background .2s,border-color .2s;
+  }
+  .btn:hover{text-decoration:none;transform:translateY(-1px)}
+  .btn-primary{background:var(--green);color:#fff;box-shadow:0 10px 24px -12px rgba(47,107,79,.7)}
+  .btn-primary:hover{background:var(--green-deep)}
+  .btn-ghost{border:1.5px solid #D8CAB8;color:var(--ink);background:rgba(255,252,247,.7)}
+  .btn-ghost:hover{border-color:var(--green);color:var(--green-deep)}
+  .hero-meta{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--muted);margin:0}
+  .hero-meta span{display:inline-flex;align-items:center;gap:7px}
+  .hero-meta svg{flex:0 0 auto;color:var(--green)}
+
+  /* ---------- app mock ---------- */
+  .app-window{
+    background:var(--paper);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);overflow:hidden;transform:rotate(.4deg);
+  }
+  .app-bar{
+    display:flex;align-items:center;gap:8px;
+    background:#F1E9DE;border-bottom:1px solid var(--line);
+    padding:9px 14px;font-size:12px;color:var(--muted);font-family:var(--mono);
+  }
+  .app-bar i{width:9px;height:9px;border-radius:50%;background:#D6C7B6;display:inline-block}
+  .app-bar i:first-child{background:#C98F6E}
+  .app-bar .ver{margin-left:auto;opacity:.75}
+  .app-body{padding:20px 20px 22px}
+  .app-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .app-head strong{font-size:22px;letter-spacing:-.01em}
+  .app-head span{font-size:12px;color:var(--muted)}
+  .status-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .status-card{border:1px solid var(--line);border-radius:6px;background:#fff;padding:10px 12px}
+  .status-card .label{display:block;font-size:11px;color:var(--muted);margin-bottom:3px}
+  .status-card .state{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+  .status-card .state::before{content:"";width:7px;height:7px;border-radius:50%;background:#3C9A6B;box-shadow:0 0 0 3px rgba(60,154,107,.14)}
+  .app-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .mini{font-size:11.5px;font-weight:600;padding:7px 12px;border-radius:4px;border:1px solid var(--line);background:#F3ECE2;color:#5D5248}
+  .mini.solid{background:var(--green);border-color:var(--green);color:#fff}
+  .mini.ghost{margin-left:auto;background:transparent}
+  .app-note{border:1px solid var(--line);border-radius:6px;background:#fff;padding:12px 14px}
+  .app-note b{font-size:12.5px}
+  .app-note ol{margin:6px 0 0;padding-left:18px;font-size:11.5px;line-height:1.8;color:#5D5248}
+  .app-float{
+    position:absolute;right:-14px;bottom:34px;
+    background:var(--green);color:#fff;font-size:12.5px;font-weight:600;
+    padding:8px 14px;border-radius:999px;box-shadow:0 14px 30px -14px rgba(37,87,65,.8);
+    display:flex;align-items:center;gap:7px;
+  }
+  .app-float::before{content:"";width:6px;height:6px;border-radius:50%;background:#A8E0C2}
+  .hero-visual{position:relative}
+
+  /* ---------- strip ---------- */
+  .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,252,247,.6)}
+  .strip-in{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:22px 0}
+  .strip-item{display:flex;align-items:center;gap:12px;font-size:15px}
+  .strip-item svg{color:var(--green);flex:0 0 auto}
+  .strip-item b{font-weight:600}
+  .strip-item span{color:var(--muted)}
+
+  /* ---------- sections ---------- */
+  section{padding:88px 0}
+  .sec-head{max-width:660px;margin-bottom:44px}
+  h2{font-size:clamp(26px,3vw,38px);line-height:1.25;letter-spacing:-.015em;margin:0 0 14px;font-weight:800}
+  .sec-head p{margin:0;color:var(--muted);font-size:17px}
+
+  /* ---------- features ---------- */
+  .features{background:var(--paper)}
+  .grid-features{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px 22px;transition:transform .18s,box-shadow .18s,border-color .18s;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#D8C8B4}
+  .card .ico{
+    width:42px;height:42px;border-radius:12px;background:var(--green-mist);color:var(--green-deep);
+    display:grid;place-items:center;margin-bottom:16px;
+  }
+  .card h3{font-size:16.5px;margin:0 0 7px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .card p{margin:0;font-size:14.5px;line-height:1.7;color:var(--muted)}
+  .tag{
+    font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--terra);
+    background:#F8E9DE;border-radius:999px;padding:2px 8px;
+  }
+
+  /* ---------- steps ---------- */
+  .prep{
+    display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;
+    background:var(--green-mist);border:1px solid #CFE0D3;border-radius:var(--radius);
+    padding:20px 24px;margin-bottom:28px;
+  }
+  .prep b{white-space:nowrap;color:var(--green-deep);padding-top:2px}
+  .prep ul{margin:0;padding:0;list-style:none;display:flex;gap:10px 26px;flex-wrap:wrap;font-size:15px}
+  .prep li{display:flex;align-items:baseline;gap:8px}
+  .prep li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);flex:0 0 auto;transform:translateY(-2px)}
+  .grid-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .step{
+    position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:28px 24px 24px;
+  }
+  .step .num{
+    font-family:var(--mono);font-size:13px;font-weight:700;color:var(--green);
+    background:var(--green-mist);border-radius:999px;padding:3px 10px;display:inline-block;margin-bottom:16px;
+  }
+  .step h3{margin:0 0 9px;font-size:18px;line-height:1.45;font-weight:700}
+  .step p{margin:0;font-size:14.5px;color:var(--muted)}
+  .step .keys{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .key{
+    font-family:var(--mono);font-size:12px;background:#F6F0E7;border:1px solid var(--line);
+    border-radius:6px;padding:3px 8px;color:#5D5248;
+  }
+  .tip{
+    margin-top:24px;font-size:14.5px;color:var(--muted);
+    border-left:3px solid var(--green);padding:2px 0 2px 14px;
+  }
+
+  /* ---------- screenshots ---------- */
+  .shots{background:var(--paper)}
+  .grid-shots{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .shot{margin:0}
+  .shot-frame{
+    position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    background:#F1E9DE;box-shadow:0 14px 34px -24px rgba(58,42,28,.45);
+    aspect-ratio:940/660;
+  }
+  .shot-frame img{width:100%;height:100%;object-fit:cover;object-position:top left}
+  .shot-fallback{
+    display:none;position:absolute;inset:0;flex-direction:column;gap:8px;
+    align-items:center;justify-content:center;color:var(--muted);font-size:13px;
+    background:repeating-linear-gradient(135deg,#F6EFE5,#F6EFE5 12px,#F1E8DB 12px,#F1E8DB 24px);
+  }
+  .shot-fallback code{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--line);padding:3px 8px;border-radius:5px}
+  .shot-frame.is-missing img{display:none}
+  .shot-frame.is-missing .shot-fallback{display:flex}
+  figcaption{margin-top:11px;font-size:14px;color:var(--muted)}
+  figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+
+  /* ---------- get ---------- */
+  .buy-panel{
+    display:grid;grid-template-columns:1.05fr .95fr;
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;box-shadow:var(--shadow);
+  }
+  .buy-flow{padding:38px 36px}
+  .get-list{list-style:none;margin:0;padding:0;counter-reset:g}
+  .get-list li{
+    counter-increment:g;position:relative;padding:0 0 28px 52px;
+  }
+  .get-list li::before{
+    content:counter(g);position:absolute;left:0;top:2px;
+    width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-size:14px;font-weight:700;
+  }
+  .get-list li:not(:last-child)::after{
+    content:"";position:absolute;left:15.5px;top:38px;bottom:2px;width:1px;background:var(--line);
+  }
+  .get-list h3{margin:0 0 4px;font-size:17px}
+  .get-list p{margin:0;font-size:14.5px;color:var(--muted)}
+  .get-list .mail{font-family:var(--mono);font-size:14px;word-break:break-all}
+  .buy-included{
+    display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+    padding-top:20px;border-top:1px solid var(--line);
+    font-size:13px;color:var(--muted);
+  }
+  .buy-included b{width:100%;font-size:12px;letter-spacing:.06em;color:var(--muted);font-weight:700}
+  .buy-included span{background:var(--green-mist);color:var(--green-deep);border-radius:999px;padding:4px 10px;font-size:12.5px}
+  .pay-panel{
+    background:var(--green-deep);color:#EAF2EC;
+    padding:34px 26px 28px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+  }
+  .pay-price{display:flex;align-items:center;gap:12px;margin-bottom:20px;text-align:left}
+  .pay-price strong{font-size:42px;line-height:1;letter-spacing:-.03em;color:#fff}
+  .pay-price span{font-size:12.5px;line-height:1.6;color:#CFE0D3}
+  .pay-codes{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .pay-codes figure{margin:0}
+  .pay-codes img{
+    width:168px;height:168px;display:block;background:#fff;
+    border-radius:10px;padding:7px;
+  }
+  .pay-codes figcaption{margin-top:8px;font-size:12.5px;color:#CFE0D3}
+  .pay-codes figcaption a{display:block;margin-top:3px;font-size:11.5px;color:#A8E0C2}
+  .pay-btn{
+    background:#fff;color:var(--green-deep);font-size:14px;
+    padding:10px 20px;border-radius:999px;font-weight:700;
+  }
+  .pay-btn:hover{background:var(--green-mist);text-decoration:none}
+  .pay-note{margin:14px 0 0;font-size:11.5px;line-height:1.6;color:#C3D6C8}
+
+  /* ---------- FAQ ---------- */
+  .faq{background:var(--paper)}
+  .faq-list{max-width:820px;border-top:1px solid var(--line)}
+  details{border-bottom:1px solid var(--line)}
+  summary{
+    cursor:pointer;list-style:none;display:flex;align-items:center;gap:16px;
+    padding:20px 2px;font-size:16.5px;font-weight:600;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::after{
+    content:"";margin-left:auto;width:11px;height:11px;flex:0 0 auto;
+    border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);
+    transform:rotate(45deg);transition:transform .2s;margin-top:-4px;
+  }
+  details[open] summary::after{transform:rotate(-135deg);margin-top:4px}
+  details p{margin:0 0 22px;padding-right:34px;color:var(--muted);font-size:15px}
+
+  /* ---------- footer ---------- */
+  .site-foot{background:#20392C;color:#D9E4DC;padding:56px 0 34px;font-size:14px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:36px;padding-bottom:34px;border-bottom:1px solid rgba(255,255,255,.14)}
+  .foot-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;color:#fff;margin-bottom:12px}
+  .site-foot p{margin:0 0 8px;color:#B9CEBE;line-height:1.75}
+  .site-foot h4{margin:0 0 12px;font-size:13px;letter-spacing:.1em;color:#8FAE9A;font-weight:700}
+  .site-foot a{color:#D9E4DC}
+  .site-foot a:hover{color:#fff}
+  .foot-bottom{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:22px;color:#8FAE9A;font-size:12.5px}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:960px){
+    .hero-grid{grid-template-columns:1fr;gap:44px}
+    .hero{padding:64px 0 60px}
+    .hero-visual{max-width:560px}
+    .grid-features{grid-template-columns:repeat(2,1fr)}
+    .grid-steps{grid-template-columns:1fr}
+    .grid-shots{grid-template-columns:repeat(2,1fr)}
+    .buy-panel{grid-template-columns:1fr}
+    .buy-flow{padding:32px 30px}
+    .pay-codes img{width:180px;height:180px}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:820px){
+    .nav{display:none}
+    .head-cta{margin-left:auto}
+  }
+  @media (max-width:640px){
+    body{font-size:16px}
+    .wrap{width:calc(100% - 36px)}
+    section{padding:64px 0}
+    .head-in{height:60px}
+    .strip-in{grid-template-columns:1fr;gap:14px;padding:20px 0}
+    .grid-features,.grid-shots{grid-template-columns:1fr}
+    .status-row{grid-template-columns:1fr}
+    .app-float{display:none}
+    .prep{flex-direction:column;gap:10px;padding:18px 20px}
+    .prep ul{flex-direction:column;gap:8px}
+    .buy-flow{padding:28px 22px}
+    .pay-panel{padding:30px 20px 26px}
+    .pay-codes{flex-direction:column;align-items:center;gap:18px}
+    .pay-codes img{width:200px;height:200px;padding:8px}
+    .foot-grid{grid-template-columns:1fr;gap:26px}
+    details p{padding-right:0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+  }
+</style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <nav>
-        <div class="brand">Amoo <span>Bridge</span></div>
-        <div class="nav-links">
-          <a href="#features">功能</a>
-          <a href="#start">开始使用</a>
-          <a href="#buy">购买与授权</a>
-          <a href="https://github.com/matreshka15/amoo-bridge-site/discussions">社区</a>
+<a class="skip" href="#main">跳到正文</a>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="#top" aria-label="Amoo Bridge 首页">
+      <span class="mark" aria-hidden="true">
+        <svg width="19" height="19" viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round">
+          <path d="M5 23v-5a11 11 0 0 1 22 0v5"/>
+          <path d="M3.5 23h25"/>
+          <path d="M10 23v-5.5M16 23v-6M22 23v-5.5"/>
+        </svg>
+      </span>
+      Amoo Bridge
+    </a>
+    <nav class="nav" aria-label="页面导航">
+      <a href="#features">功能</a>
+      <a href="#steps">三步开始</a>
+      <a href="#shots">界面</a>
+      <a href="#get">获取</a>
+      <a href="#faq">常见问题</a>
+    </nav>
+    <a class="head-cta" href="#get">获取软件</a>
+  </div>
+</header>
+
+<main id="main">
+  <!-- hero -->
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>把手机上的 Amoo，<br>接到<em>这台电脑</em>上</h1>
+        <p class="lede">在本机开一个网关，<strong>Chatbox、Cherry Studio、WorkBuddy</strong> 填三行就能用。不用命令行，不用懂技术。</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#get">
+            看看怎么获取
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#steps">三步开始</a>
         </div>
-      </nav>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <section class="hero">
-      <div class="eyebrow"><span class="dot"></span> Windows 10 / 11 · 本地运行</div>
-      <h1>把手机上的 Amoo<br>接到这台电脑。</h1>
-      <p class="lead">
-        Amoo Bridge 在本机开一个网关，让 Chatbox、Cherry Studio、WorkBuddy 等客户端
-        直接使用手机上的 Amoo。也可以按需接入 MCP，把手机能力当成工具调用。
-      </p>
-      <div class="actions">
-        <a class="btn btn-primary" href="#buy">购买与授权</a>
-        <a class="btn btn-ghost" href="#features">看看功能</a>
-      </div>
-      <div class="status">当前为产品信息页；购买入口和授权流程正在配置。</div>
-    </section>
-
-    <section id="features">
-      <div class="section-head">
-        <h2>三种用法，按需要选</h2>
-        <p>普通聊天只需要模型地址；MCP 是给进阶用户的，不用不装。</p>
-      </div>
-      <div class="grid">
-        <article class="card">
-          <h3>OpenAI 兼容端点</h3>
-          <p>在任意支持 OpenAI 接口的客户端里填三行：Base URL、API Key、模型名。</p>
-        </article>
-        <article class="card">
-          <h3>MCP（可选）</h3>
-          <p>让 WorkBuddy / Claude Desktop 直接查手机会话、读历史、发消息。普通聊天不需要。</p>
-        </article>
-        <article class="card">
-          <h3>本地网关</h3>
-          <p>只监听 127.0.0.1，不经过第三方服务器；托盘常驻，断线自动重连。</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="start">
-      <div class="section-head">
-        <h2>三步开始</h2>
-        <p>不用记命令，跟着向导点就行。</p>
-      </div>
-      <div class="steps">
-        <div class="step"><b>1</b><p>手机用数据线连电脑，打开 USB 调试并允许这台电脑。</p></div>
-        <div class="step"><b>2</b><p>桌面端点“一键连接手机”，等待网关启动。</p></div>
-        <div class="step"><b>3</b><p>在“模型”页复制三行地址，粘贴到聊天客户端。</p></div>
-      </div>
-    </section>
-
-    <section id="buy">
-      <div class="buy">
-        <div>
-          <div class="tag">即将开放</div>
-          <h2>购买与授权</h2>
-          <p>
-            正在配置商品、试用和授权交付流程。完成后这里会显示价格、购买入口和售后说明。
-            现在可以先在 Discussions 关注上线通知。
-          </p>
-        </div>
-        <div class="actions">
-          <a class="btn btn-primary" href="https://github.com/matreshka15/amoo-bridge-site/discussions">关注上线通知</a>
-          <a class="btn btn-ghost" href="https://github.com/matreshka15/amoo-bridge-site/issues">反馈问题</a>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <h2>说明</h2>
-        <p>这个仓库只放产品信息、FAQ、更新日志和社区模板。</p>
-      </div>
-      <div class="card">
-        <p>
-          源码仓库为私有，安装包通过授权渠道交付，不在此仓库公开。
-          手机端需要已安装 Amoo；Amoo Bridge 不修改手机系统，也不要求 root。
-          第三方组件遵循各自许可证。
+        <p class="hero-meta">
+          <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 11 3.8 3 3l.8 8 9.6 9.6a2 2 0 0 0 2.8 0l4.4-4.4a2 2 0 0 0 0-2.8Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>v3.7.0 · ¥14.9</span>
+          <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Windows 10 / 11 64 位</span>
+          <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><rect x="4" y="15" width="16" height="6" rx="2"/></svg>一根能传数据的 USB 线</span>
         </p>
       </div>
-    </section>
-  </main>
 
-  <footer>
-    <div class="wrap">
-      © 2026 Amoo Bridge. All rights reserved. ·
-      <a href="https://github.com/matreshka15/amoo-bridge-site">GitHub</a> ·
-      <a href="https://github.com/matreshka15/amoo-bridge-site/discussions">Discussions</a>
+      <div class="hero-visual">
+        <div class="app-window" role="img" aria-label="Amoo Bridge 界面示意图：手机已连接、网关运行中">
+          <div class="app-bar"><i></i><i></i><i></i> Amoo Bridge <span class="ver">v3.7.0</span></div>
+          <div class="app-body">
+            <div class="app-head"><strong>Amoo Bridge</strong><span>把手机上的 Amoo 接到这台电脑</span></div>
+            <div class="status-row">
+              <div class="status-card"><span class="label">手机</span><span class="state">已连接 · awake</span></div>
+              <div class="status-card"><span class="label">网关</span><span class="state">运行中 · 队列 0</span></div>
+            </div>
+            <div class="app-actions">
+              <span class="mini solid">一键连接手机</span>
+              <span class="mini">停止网关</span>
+              <span class="mini ghost">下一步：填模型</span>
+            </div>
+            <div class="app-note">
+              <b>连上之后</b>
+              <ol>
+                <li>点右上角「下一步：填模型」，复制三行地址。</li>
+                <li>在 Chatbox / WorkBuddy 里新建 OpenAI 兼容模型，粘贴进去。</li>
+                <li>这个窗口可以最小化到托盘，网关会继续跑。</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <span class="app-float">连接正常，可最小化</span>
+      </div>
     </div>
-  </footer>
+  </section>
+
+  <!-- strip -->
+  <div class="strip">
+    <div class="wrap strip-in">
+      <div class="strip-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <div><b>填三行就通</b> <span>Base URL、API Key、模型名</span></div>
+      </div>
+      <div class="strip-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+        <div><b>断了会自己连</b> <span>线松、手机休眠都不用手动重启</span></div>
+      </div>
+      <div class="strip-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+        <div><b>关窗也不停</b> <span>网关常驻托盘，继续干活</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- features -->
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>连接这件事，它替你盯着</h2>
+        <p>从插上线到发出第一条消息，中间那些容易出错的环节都做了处理。</p>
+      </div>
+      <div class="grid-features">
+        <article class="card">
+          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.5 2.5 0 0 0-3.5-3.5L4 16v4Z"/><path d="m14 7 3 3"/></svg></div>
+          <h3>三步向导</h3>
+          <p>连接手机、填模型、测试，跟着窗口里的提示走，不用记步骤。</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div>
+          <h3>托盘常驻</h3>
+          <p>窗口关了也不影响，网关继续在托盘里跑。</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
+          <h3>断线自动重连</h3>
+          <p>线松了、手机睡了，它会自己试着连回来。</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 4 8l5 5"/><path d="M4 8h9a6 6 0 0 1 6 6v1"/><path d="M20 21h.01"/></svg></div>
+          <h3>端口冲突自动换</h3>
+          <p>默认端口被别的程序占了，自动换一个，不用你改配置。</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a3 3 0 0 1 3-3h11a4 4 0 0 1 4 4Z"/><path d="m9 11 2 2 4-4"/></svg></div>
+          <h3>发一条测试消息</h3>
+          <p>配置完当场发一条，通了再开始用。</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="8" width="17" height="9" rx="2"/><path d="M21 11v3"/><path d="M6 11v3M10 11v3M14 11v3"/></svg></div>
+          <h3>手机省电设置 <span class="tag">可选</span></h3>
+          <p>让手机插电时不休眠，响应更快；只改两项，随时能恢复。</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></div>
+          <h3>单实例</h3>
+          <p>重复打开只会唤起已经开着的窗口，不会起两个网关。</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg></div>
+          <h3>MCP <span class="tag">进阶 · 默认收起</span></h3>
+          <p>需要接外部工具时才用。普通聊天不用管它。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- steps -->
+  <section id="steps">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>从插线到发出第一条消息</h2>
+        <p>第一次用大概几分钟。装好之后，以后只要插上线、点一下。</p>
+      </div>
+
+      <div class="prep">
+        <b>先准备</b>
+        <ul>
+          <li>Windows 10 / 11 64 位电脑</li>
+          <li>手机装好 Amoo，开启 USB 调试</li>
+          <li>一根能传数据的 USB 线（只能充电的不行）</li>
+        </ul>
+      </div>
+
+      <div class="grid-steps">
+        <article class="step">
+          <span class="num">STEP 01</span>
+          <h3>插线，点「一键连接手机」</h3>
+          <p>用 USB 线把手机接到电脑，打开 Amoo Bridge，点绿色按钮。手机上弹出「允许 USB 调试」时选允许。</p>
+          <p style="margin-top:10px">顶部出现「手机 已连接 · awake」，说明手机这头通了。</p>
+        </article>
+        <article class="step">
+          <span class="num">STEP 02</span>
+          <h3>点「下一步：填模型」，复制三行</h3>
+          <p>窗口里会直接给出三行配置，复制它们：</p>
+          <div class="keys">
+            <span class="key">Base URL</span>
+            <span class="key">API Key</span>
+            <span class="key">模型名</span>
+          </div>
+        </article>
+        <article class="step">
+          <span class="num">STEP 03</span>
+          <h3>粘进客户端，发条消息</h3>
+          <p>在 Chatbox、Cherry Studio 或 WorkBuddy 里新建 OpenAI 兼容模型，粘贴三行，发一句话。</p>
+          <p style="margin-top:10px">收到回复就通了，之后窗口最小化到托盘就行。</p>
+        </article>
+      </div>
+
+      <p class="tip">卡住了就点窗口右上角的「不会用？看三步向导」，跟着重新走一遍。</p>
+    </div>
+  </section>
+
+  <!-- screenshots -->
+  <section class="shots" id="shots">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>界面长这样</h2>
+        <p>没有多余的东西：左边切页面，右边是当前页要做的事。</p>
+      </div>
+      <div class="grid-shots">
+        <figure class="shot">
+          <div class="shot-frame">
+            <img src="assets/connect.png" alt="连接页：手机已连接、网关运行中" onerror="this.parentElement.classList.add('is-missing')">
+            <div class="shot-fallback"><span>截图待补</span><code>assets/connect.png</code></div>
+          </div>
+          <figcaption><b>连接页</b>手机和网关的状态都在这页，绿点表示正常。</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="shot-frame">
+            <img src="assets/model.png" alt="模型页：Base URL、API Key、模型名三行配置" onerror="this.parentElement.classList.add('is-missing')">
+            <div class="shot-fallback"><span>截图待补</span><code>assets/model.png</code></div>
+          </div>
+          <figcaption><b>模型页</b>三行配置在这里复制，直接粘进客户端。</figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="shot-frame">
+            <img src="assets/settings.png" alt="设置页：启动与端口选项" onerror="this.parentElement.classList.add('is-missing')">
+            <div class="shot-fallback"><span>截图待补</span><code>assets/settings.png</code></div>
+          </div>
+          <figcaption><b>设置页</b>启动方式与端口设置，按需调整。</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- get -->
+  <section id="get">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>怎么拿到 Amoo Bridge</h2>
+        <p>源码和安装包不公开，安装包按订单人工发放。流程不复杂，就是人工核验这一步。</p>
+      </div>
+
+      <div class="buy-panel">
+        <div class="buy-flow">
+          <ol class="get-list">
+            <li>
+              <h3>扫码支付 ¥14.9</h3>
+              <p>用微信或支付宝扫码，付款时备注你的邮箱。</p>
+            </li>
+            <li>
+              <h3>发邮件确认</h3>
+              <p>付款后发邮件到 <a class="mail" href="mailto:matreshka999@icloud.com">matreshka999@icloud.com</a>，附交易号（文字）、金额、付款时间和截图。</p>
+            </li>
+            <li>
+              <h3>收下载链接</h3>
+              <p>工作日 24 小时内、周末与节假日 48 小时内人工核验；通过后发下载链接、SHA-256 和安装说明。</p>
+            </li>
+          </ol>
+
+          <div class="buy-included">
+            <b>付款后你会收到</b>
+            <span>下载链接 + 提取码</span>
+            <span>SHA-256 校验值</span>
+            <span>安装与连接说明</span>
+          </div>
+        </div>
+
+        <aside class="pay-panel">
+          <div class="pay-price"><strong>¥14.9</strong><span>发售价<br>个人使用</span></div>
+          <div class="pay-codes">
+            <figure>
+              <img src="assets/pay-wechat.png" alt="微信支付收款码" width="180" height="180">
+              <figcaption>微信支付<a href="assets/pay-wechat.png" target="_blank" rel="noopener">点击放大</a></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/pay-alipay.png" alt="支付宝收款码" width="180" height="180">
+              <figcaption>支付宝<a href="assets/pay-alipay.png" target="_blank" rel="noopener">点击放大</a></figcaption>
+            </figure>
+          </div>
+          <p class="pay-note">付款备注邮箱；付完发邮件确认。手机端可长按二维码识别。</p>
+          <a class="btn btn-primary pay-btn" href="mailto:matreshka999@icloud.com?subject=%5BAmoo%20Bridge%5D%20%E5%B7%B2%E4%BB%98%E6%AC%BE">已付款，发邮件</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- faq -->
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>上手前，先看这几条</h2>
+      </div>
+      <div class="faq-list">
+        <details open>
+          <summary>需要会写代码吗？</summary>
+          <p>不需要。装好打开，按「三步向导」点下去就行，全程没有命令行。</p>
+        </details>
+        <details>
+          <summary>MCP 是什么？必须开吗？</summary>
+          <p>MCP 是进阶功能，给需要接入外部工具的人用。普通聊天完全不需要，界面里默认收起。</p>
+        </details>
+        <details>
+          <summary>支持 Mac 或 Linux 吗？</summary>
+          <p>当前版本只支持 Windows 10 / 11 64 位。</p>
+        </details>
+        <details>
+          <summary>手机一定要用线连着吗？</summary>
+          <p>需要一根能传数据的 USB 线把手机接到电脑，只能充电的线不行。</p>
+        </details>
+        <details>
+          <summary>连接断了怎么办？</summary>
+          <p>桌面端会自动重连。如果一直连不上，重新插一下数据线，或到「诊断」页看看状态。</p>
+        </details>
+        <details>
+          <summary>端口被占用了怎么办？</summary>
+          <p>不用管，程序会自动换一个可用端口。</p>
+        </details>
+        <details>
+          <summary>支持哪些客户端？</summary>
+          <p>凡是支持 OpenAI 兼容接口的客户端都可以，例如 Chatbox、Cherry Studio、WorkBuddy。填的都是同样三行：Base URL、API Key、模型名。</p>
+        </details>
+        <details>
+          <summary>为什么下载不到安装包？</summary>
+          <p>源码和安装包不公开，按订单人工发放。按上面「获取软件」发邮件即可。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">
+          <span class="mark" style="width:28px;height:28px;border-radius:8px" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M5 23v-5a11 11 0 0 1 22 0v5"/><path d="M3.5 23h25"/><path d="M10 23v-5.5M16 23v-6M22 23v-5.5"/></svg>
+          </span>
+          Amoo Bridge
+        </div>
+        <p>把手机上的 Amoo 接到 Windows 电脑。<br>当前版本 v3.7.0 · Windows 10 / 11 64 位</p>
+      </div>
+      <div>
+        <h4>页面</h4>
+        <p><a href="#features">功能</a><br><a href="#steps">三步开始</a><br><a href="#shots">界面</a><br><a href="#faq">常见问题</a></p>
+      </div>
+      <div>
+        <h4>联系与许可</h4>
+        <p>获取软件、问题反馈：<br><a href="mailto:matreshka999@icloud.com">matreshka999@icloud.com</a></p>
+        <p>付费软件，源码与安装包不公开。购买后获得个人使用许可，请勿转发或转售。</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Amoo Bridge</span>
+      <span>「Amoo」名称及相关商标、协议的权利归其权利人所有。本页不表示与 Amoo 官方存在合作、授权或背书关系。文中第三方客户端名称仅用于说明兼容性。</span>
+    </div>
+  </div>
+</footer>
 </body>
 </html>

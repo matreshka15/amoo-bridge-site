@@ -35,5 +35,5 @@ body:
     attributes:
       label: 确认
       options:
-        - label: 我确认没有粘贴 API Key、授权码、订单号或他人隐私
+        - label: 我确认没有粘贴 API Key、付款信息、订单号或他人隐私
           required: true

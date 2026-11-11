@@ -1,8 +1,5 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 使用问题 / 购买与授权咨询
-    url: https://github.com/matreshka15/amoo-bridge-site/discussions
-    about: 先在这里提问；购买和授权细节会随商品上架一起公布。
-  - name: 爱发电（关注与联系作者）
-    url: https://afdian.com/a/hankli
-    about: 当前以技术咨询为主；软件商品上架后会单独说明。
+  - name: 购买咨询 / 使用问题
+    url: mailto:matreshka999@icloud.com
+    about: 购买、付款、安装包与安装问题请发邮件；公开区不处理订单信息。
