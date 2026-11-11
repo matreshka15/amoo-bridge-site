@@ -6,7 +6,7 @@
 在本机开一个网关，Chatbox、Cherry Studio、WorkBuddy 等 OpenAI 兼容客户端填三行就能用。</p>
 
 <p>
-  <img src="https://img.shields.io/badge/version-3.7.0-2F6B4F?style=flat-square" alt="version 3.7.0">
+  <img src="https://img.shields.io/badge/version-3.7.1-2F6B4F?style=flat-square" alt="version 3.7.1">
   <img src="https://img.shields.io/badge/platform-Windows%2010%20%2F%2011%20x64-2F6B4F?style=flat-square" alt="Windows 10 / 11 x64">
   <img src="https://img.shields.io/badge/price-%C2%A514.9-B96A42?style=flat-square" alt="price ¥14.9">
   <img src="https://img.shields.io/badge/license-Commercial-6B5F55?style=flat-square" alt="commercial license">
@@ -168,7 +168,7 @@ Chatbox · Cherry Studio · WorkBuddy 等 OpenAI 兼容客户端
 
 ## 版本与更新
 
-- 当前版本：**v3.7.0**
+- 当前版本：**v3.7.1**
 - 更新动态：[Releases](https://github.com/matreshka15/amoo-bridge-site/releases)
 - 使用问题：[GitHub Discussions](https://github.com/matreshka15/amoo-bridge-site/discussions)
 - Bug / 功能建议：[GitHub Issues](https://github.com/matreshka15/amoo-bridge-site/issues)

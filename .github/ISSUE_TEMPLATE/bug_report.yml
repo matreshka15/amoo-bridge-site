@@ -11,7 +11,7 @@ body:
     id: version
     attributes:
       label: Amoo Bridge 版本
-      placeholder: 例如 3.7.0（窗口右上角）
+      placeholder: 例如 3.7.1（窗口右上角）
     validations:
       required: true
   - type: input
