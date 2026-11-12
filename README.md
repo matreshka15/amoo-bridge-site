@@ -6,7 +6,7 @@
 在本机开一个网关，Chatbox、Cherry Studio、WorkBuddy 等 OpenAI 兼容客户端填三行就能用。</p>
 
 <p>
-  <img src="https://img.shields.io/badge/version-3.7.1-2F6B4F?style=flat-square" alt="version 3.7.1">
+  <img src="https://img.shields.io/badge/version-3.7.3-2F6B4F?style=flat-square" alt="version 3.7.3">
   <img src="https://img.shields.io/badge/platform-Windows%2010%20%2F%2011%20x64-2F6B4F?style=flat-square" alt="Windows 10 / 11 x64">
   <img src="https://img.shields.io/badge/price-%C2%A514.9-B96A42?style=flat-square" alt="price ¥14.9">
   <img src="https://img.shields.io/badge/license-Commercial-6B5F55?style=flat-square" alt="commercial license">
@@ -28,7 +28,7 @@
 
 Amoo Bridge 是一个 Windows 桌面小工具，解决一件事：**让电脑上的聊天客户端用上你手机里的 Amoo。**
 
-它通过 USB 把手机连到电脑，在本机开一个网关。客户端按 OpenAI 兼容格式填三行——Base URL、API Key、模型名——就能把对话发到手机上的 Amoo。
+它通过 USB（也可以走局域网无线调试）把手机连到电脑，在本机开一个网关。客户端按 OpenAI 兼容格式填三行——Base URL、API Key、模型名——就能把对话发到手机上的 Amoo。
 
 不用命令行，不用改配置文件，打开窗口点几下就行。
 
@@ -133,7 +133,7 @@ Chatbox · Cherry Studio · WorkBuddy 等 OpenAI 兼容客户端
 
 <details>
 <summary><b>手机一定要用线连着吗？</b></summary>
-<p>需要一根能传数据的 USB 线把手机接到电脑，只能充电的线不行。</p>
+<p>默认走数据线，最稳；线必须能传数据，只能充电的不行。想在局域网里用无线，可以在「高级设置」里取消「只用数据线」，按说明连一次无线调试；无线会掉线，日常还是建议插线。</p>
 </details>
 
 <details>
@@ -168,7 +168,7 @@ Chatbox · Cherry Studio · WorkBuddy 等 OpenAI 兼容客户端
 
 ## 版本与更新
 
-- 当前版本：**v3.7.1**
+- 当前版本：**v3.7.3**
 - 更新动态：[Releases](https://github.com/matreshka15/amoo-bridge-site/releases)
 - 使用问题：[GitHub Discussions](https://github.com/matreshka15/amoo-bridge-site/discussions)
 - Bug / 功能建议：[GitHub Issues](https://github.com/matreshka15/amoo-bridge-site/issues)
