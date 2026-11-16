@@ -3,9 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="data:,">
-<title>Amoo Bridge — 把手机上的 Amoo 接到这台电脑</title>
-<meta name="description" content="Amoo Bridge 是一个 Windows 桌面小工具：用 USB 把手机上的 Amoo 接到电脑，在本机开网关，Chatbox、Cherry Studio、WorkBuddy 等 OpenAI 兼容客户端填三行就能用。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232F6B4F'/><path d='M5 23v-5a11 11 0 0 1 22 0v5M3.5 23h25M10 23v-5.5M16 23v-6M22 23v-5.5' stroke='%23fff' stroke-width='2.4' fill='none' stroke-linecap='round'/></svg>">
+<title>Amoo Bridge — 让 Windows 客户端用上手机里的 Amoo</title>
+<meta name="description" content="Amoo 没有对外开接口。Amoo Bridge 在你自己的电脑上补了这一层：一根数据线连手机，本机跑一个 OpenAI 兼容网关，Chatbox、Cherry Studio、Cursor、VS Code 填三行就能用。¥14.9 一次付费，支持 Windows 10 / 11。">
+<meta name="theme-color" content="#2F6B4F">
+<link rel="canonical" href="https://matreshka15.github.io/amoo-bridge-site/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Amoo Bridge">
+<meta property="og:title" content="Amoo Bridge — 让 Windows 客户端用上手机里的 Amoo">
+<meta property="og:description" content="Amoo 没有对外开接口，这个工具在你自己的电脑上补了中间那一层。一根 USB 线，一个本机网关，客户端填三行就能用。">
+<meta property="og:url" content="https://matreshka15.github.io/amoo-bridge-site/">
+<meta property="og:image" content="https://matreshka15.github.io/amoo-bridge-site/assets/model.png">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   :root{
     --cream:#FAF4EA;
@@ -47,7 +56,7 @@
   .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--ink)}
   .brand:hover{text-decoration:none}
   .mark{width:32px;height:32px;border-radius:9px;background:var(--green);display:grid;place-items:center;flex:0 0 auto}
-  .nav{display:flex;gap:26px;margin-left:auto;font-size:15px}
+  .nav{display:flex;gap:24px;margin-left:auto;font-size:15px}
   .nav a{color:var(--muted)}
   .nav a:hover{color:var(--ink);text-decoration:none}
   .head-cta{
@@ -76,7 +85,7 @@
   }
   .lede{font-size:19px;color:var(--muted);max-width:33em;margin:0 0 30px}
   .lede strong{color:var(--ink);font-weight:600}
-  .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:8px;
     font-size:16px;font-weight:600;padding:13px 24px;border-radius:999px;
@@ -90,6 +99,7 @@
   .hero-meta{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--muted);margin:0}
   .hero-meta span{display:inline-flex;align-items:center;gap:7px}
   .hero-meta svg{flex:0 0 auto;color:var(--green)}
+  .hero-note{margin:16px 0 0;font-size:13.5px;line-height:1.7;color:var(--muted);max-width:34em}
 
   /* ---------- app mock ---------- */
   .app-window{
@@ -129,19 +139,23 @@
   .app-float::before{content:"";width:6px;height:6px;border-radius:50%;background:#A8E0C2}
   .hero-visual{position:relative}
 
-  /* ---------- strip ---------- */
-  .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,252,247,.6)}
-  .strip-in{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:22px 0}
-  .strip-item{display:flex;align-items:center;gap:12px;font-size:15px}
-  .strip-item svg{color:var(--green);flex:0 0 auto}
-  .strip-item b{font-weight:600}
-  .strip-item span{color:var(--muted)}
-
   /* ---------- sections ---------- */
   section{padding:88px 0}
   .sec-head{max-width:660px;margin-bottom:44px}
   h2{font-size:clamp(26px,3vw,38px);line-height:1.25;letter-spacing:-.015em;margin:0 0 14px;font-weight:800}
   .sec-head p{margin:0;color:var(--muted);font-size:17px}
+
+  /* ---------- why ---------- */
+  .why{background:rgba(255,252,247,.6);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .why-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:56px;align-items:start}
+  .why-copy p{margin:0 0 18px;font-size:17px;color:var(--muted)}
+  .why-copy p:last-child{margin-bottom:0}
+  .why-copy strong{color:var(--ink);font-weight:600}
+  .why-note{background:var(--green-mist);border:1px solid #CFE0D3;border-radius:var(--radius);padding:26px 24px}
+  .why-note b{display:block;font-size:12px;letter-spacing:.1em;color:var(--green-deep);margin-bottom:12px;font-weight:700}
+  .why-note ul{list-style:none;margin:0;padding:0;font-size:15px}
+  .why-note li{padding:7px 0;border-bottom:1px solid rgba(47,107,79,.14);color:#3E5145;line-height:1.65}
+  .why-note li:last-child{border-bottom:0}
 
   /* ---------- features ---------- */
   .features{background:var(--paper)}
@@ -161,6 +175,11 @@
     font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--terra);
     background:#F8E9DE;border-radius:999px;padding:2px 8px;
   }
+  .minor{
+    margin:26px 0 0;padding-top:22px;border-top:1px solid var(--line);
+    font-size:15px;color:var(--muted);line-height:1.85;
+  }
+  .minor b{color:var(--ink);font-weight:600}
 
   /* ---------- steps ---------- */
   .prep{
@@ -183,6 +202,7 @@
   }
   .step h3{margin:0 0 9px;font-size:18px;line-height:1.45;font-weight:700}
   .step p{margin:0;font-size:14.5px;color:var(--muted)}
+  .step p+p{margin-top:10px}
   .step .keys{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
   .key{
     font-family:var(--mono);font-size:12px;background:#F6F0E7;border:1px solid var(--line);
@@ -265,6 +285,17 @@
   }
   .pay-btn:hover{background:var(--green-mist);text-decoration:none}
   .pay-note{margin:14px 0 0;font-size:11.5px;line-height:1.6;color:#C3D6C8}
+  .notice{
+    margin-top:26px;background:#FDF6EC;border:1px solid #EBD9BF;
+    border-radius:var(--radius);padding:22px 24px;
+  }
+  .notice b{display:block;margin-bottom:6px;font-size:16px}
+  .notice p{margin:0;font-size:14.5px;line-height:1.75;color:var(--muted)}
+  .notice p+p{margin-top:8px}
+
+  /* ---------- about ---------- */
+  .about{background:var(--paper)}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
 
   /* ---------- FAQ ---------- */
   .faq{background:var(--paper)}
@@ -298,9 +329,11 @@
     .hero-grid{grid-template-columns:1fr;gap:44px}
     .hero{padding:64px 0 60px}
     .hero-visual{max-width:560px}
+    .why-grid{grid-template-columns:1fr;gap:30px}
     .grid-features{grid-template-columns:repeat(2,1fr)}
     .grid-steps{grid-template-columns:1fr}
     .grid-shots{grid-template-columns:repeat(2,1fr)}
+    .grid-3{grid-template-columns:1fr 1fr}
     .buy-panel{grid-template-columns:1fr}
     .buy-flow{padding:32px 30px}
     .pay-codes img{width:180px;height:180px}
@@ -315,8 +348,8 @@
     .wrap{width:calc(100% - 36px)}
     section{padding:64px 0}
     .head-in{height:60px}
-    .strip-in{grid-template-columns:1fr;gap:14px;padding:20px 0}
     .grid-features,.grid-shots{grid-template-columns:1fr}
+    .grid-3{grid-template-columns:1fr}
     .status-row{grid-template-columns:1fr}
     .app-float{display:none}
     .prep{flex-direction:column;gap:10px;padding:18px 20px}
@@ -350,13 +383,14 @@
       Amoo Bridge
     </a>
     <nav class="nav" aria-label="页面导航">
+      <a href="#why">为什么</a>
       <a href="#features">功能</a>
       <a href="#steps">三步开始</a>
       <a href="#shots">界面</a>
       <a href="#get">获取</a>
       <a href="#faq">常见问题</a>
     </nav>
-    <a class="head-cta" href="#get">获取软件</a>
+    <a class="head-cta" href="#get">¥14.9 获取</a>
   </div>
 </header>
 
@@ -365,27 +399,28 @@
   <section class="hero" id="top">
     <div class="wrap hero-grid">
       <div>
-        <h1>把手机上的 Amoo，<br>接到<em>这台电脑</em>上</h1>
-        <p class="lede">在本机开一个网关，<strong>Chatbox、Cherry Studio、WorkBuddy</strong> 填三行就能用。不用命令行，不用懂技术。</p>
+        <h1>让电脑上的客户端，<br>用上手机里的<em>Amoo</em></h1>
+        <p class="lede">Amoo 没有对外开接口。<strong>Amoo Bridge 在你自己电脑上补了这一层</strong>：一根数据线连手机，本机跑一个网关，Chatbox、Cursor、VS Code 里就多出一个能选的模型。</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="#get">
-            看看怎么获取
+            ¥14.9 获取软件
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a class="btn btn-ghost" href="#steps">三步开始</a>
+          <a class="btn btn-ghost" href="#steps">先看怎么装</a>
         </div>
         <p class="hero-meta">
-          <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 11 3.8 3 3l.8 8 9.6 9.6a2 2 0 0 0 2.8 0l4.4-4.4a2 2 0 0 0 0-2.8Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>v3.7.3 · ¥14.9</span>
+          <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 11 3.8 3 3l.8 8 9.6 9.6a2 2 0 0 0 2.8 0l4.4-4.4a2 2 0 0 0 0-2.8Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>v3.7.3 · 一次付费</span>
           <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Windows 10 / 11 64 位</span>
           <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><rect x="4" y="15" width="16" height="6" rx="2"/></svg>一根能传数据的 USB 线</span>
         </p>
+        <p class="hero-note">独立第三方工具，不是 Amoo 官方产品。不改 Amoo 本身，也不动它的账号、额度与付费机制。</p>
       </div>
 
       <div class="hero-visual">
         <div class="app-window" role="img" aria-label="Amoo Bridge 界面示意图：手机已连接、网关运行中">
           <div class="app-bar"><i></i><i></i><i></i> Amoo Bridge <span class="ver">v3.7.3</span></div>
           <div class="app-body">
-            <div class="app-head"><strong>Amoo Bridge</strong><span>把手机上的 Amoo 接到这台电脑</span></div>
+            <div class="app-head"><strong>Amoo Bridge</strong><span>本机网关 · 手机已连接</span></div>
             <div class="status-row">
               <div class="status-card"><span class="label">手机</span><span class="state">已连接 · awake</span></div>
               <div class="status-card"><span class="label">网关</span><span class="state">运行中 · 队列 0</span></div>
@@ -399,7 +434,7 @@
               <b>连上之后</b>
               <ol>
                 <li>点右上角「下一步：填模型」，复制三行地址。</li>
-                <li>在 Chatbox / WorkBuddy 里新建 OpenAI 兼容模型，粘贴进去。</li>
+                <li>在 Chatbox / Cursor 里新建 OpenAI 兼容模型，粘贴进去。</li>
                 <li>这个窗口可以最小化到托盘，网关会继续跑。</li>
               </ol>
             </div>
@@ -410,73 +445,62 @@
     </div>
   </section>
 
-  <!-- strip -->
-  <div class="strip">
-    <div class="wrap strip-in">
-      <div class="strip-item">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-        <div><b>填三行就通</b> <span>Base URL、API Key、模型名</span></div>
+  <!-- why -->
+  <section class="why" id="why">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>客户端只认一种接口，手机那头没开</h2>
+        <p>于是中间这一层，得有人补上。</p>
       </div>
-      <div class="strip-item">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
-        <div><b>断了会自己连</b> <span>线松、手机休眠都不用手动重启</span></div>
-      </div>
-      <div class="strip-item">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
-        <div><b>关窗也不停</b> <span>网关常驻托盘，继续干活</span></div>
+      <div class="why-grid">
+        <div class="why-copy">
+          <p>改一段八百字的稿子，你在电脑上开好了编辑器，手指却要伸向手机：原文复制进 Amoo，等回复，再复制回来。改一轮四次，改三轮十二次。</p>
+          <p>手机上问出来的话，在电脑上找不到；电脑上整理好的上下文，手机里接不上。想把 Amoo 接进 Cursor 或者 VS Code，会发现它连一个能填的地址都没有。</p>
+          <p><strong>Amoo Bridge 补的就是这一层。</strong>手机还是那台手机，客户端里多一个能选的模型来源。它不提升 Amoo 的能力，只把"要拿手机"这件事去掉。</p>
+        </div>
+        <aside class="why-note">
+          <b>它不做什么</b>
+          <ul>
+            <li>不修改 Amoo 本身</li>
+            <li>不绕过账号、额度与付费机制</li>
+            <li>不经过我们的服务器，也没有账号体系</li>
+            <li>不提供模型，也不代理任何第三方服务</li>
+          </ul>
+        </aside>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- features -->
-  <section id="features">
+  <section class="features" id="features">
     <div class="wrap">
       <div class="sec-head">
         <h2>连接这件事，它替你盯着</h2>
-        <p>从插上线到发出第一条消息，中间那些容易出错的环节都做了处理。</p>
+        <p>从插上线到发出第一条消息，容易出错的环节都处理过了。</p>
       </div>
       <div class="grid-features">
         <article class="card">
           <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.5 2.5 0 0 0-3.5-3.5L4 16v4Z"/><path d="m14 7 3 3"/></svg></div>
           <h3>三步向导</h3>
-          <p>连接手机、填模型、测试，跟着窗口里的提示走，不用记步骤。</p>
-        </article>
-        <article class="card">
-          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div>
-          <h3>托盘常驻</h3>
-          <p>窗口关了也不影响，网关继续在托盘里跑。</p>
+          <p>连手机、填模型、发一条测试消息。窗口里写着下一步点哪里，不用翻文档。</p>
         </article>
         <article class="card">
           <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
           <h3>断线自动重连</h3>
-          <p>线松了、手机睡了，它会自己试着连回来。</p>
+          <p>线松了、手机睡过去，它自己接回来，不用你重开一遍。</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div>
+          <h3>托盘常驻</h3>
+          <p>窗口关了网关照跑。你不必为了用它，一直开着一个窗口。</p>
         </article>
         <article class="card">
           <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 4 8l5 5"/><path d="M4 8h9a6 6 0 0 1 6 6v1"/><path d="M20 21h.01"/></svg></div>
-          <h3>端口冲突自动换</h3>
-          <p>默认端口被别的程序占了，自动换一个，不用你改配置。</p>
-        </article>
-        <article class="card">
-          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a3 3 0 0 1 3-3h11a4 4 0 0 1 4 4Z"/><path d="m9 11 2 2 4-4"/></svg></div>
-          <h3>发一条测试消息</h3>
-          <p>配置完当场发一条，通了再开始用。</p>
-        </article>
-        <article class="card">
-          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="8" width="17" height="9" rx="2"/><path d="M21 11v3"/><path d="M6 11v3M10 11v3M14 11v3"/></svg></div>
-          <h3>手机省电设置 <span class="tag">可选</span></h3>
-          <p>让手机插电时不休眠，响应更快；只改两项，随时能恢复。</p>
-        </article>
-        <article class="card">
-          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></div>
-          <h3>单实例</h3>
-          <p>重复打开只会唤起已经开着的窗口，不会起两个网关。</p>
-        </article>
-        <article class="card">
-          <div class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg></div>
-          <h3>MCP <span class="tag">进阶 · 默认收起</span></h3>
-          <p>需要接外部工具时才用。普通聊天不用管它。</p>
+          <h3>端口冲突自动避让</h3>
+          <p>默认端口被别的程序占了，它换一个接着跑。你看不到报错，也犯不着去改设置。</p>
         </article>
       </div>
+      <p class="minor"><b>顺手做掉的还有：</b>配置完当场发一条消息验证；重复打开只唤起一个窗口，不会起两个网关；手机省电设置只动两项，随时能恢复；MCP 接外部工具，可选，默认收起。</p>
     </div>
   </section>
 
@@ -485,7 +509,7 @@
     <div class="wrap">
       <div class="sec-head">
         <h2>从插线到发出第一条消息</h2>
-        <p>第一次用大概几分钟。装好之后，以后只要插上线、点一下。</p>
+        <p>第一次大概两分钟。之后每次用，只要插上线。</p>
       </div>
 
       <div class="prep">
@@ -502,12 +526,12 @@
           <span class="num">STEP 01</span>
           <h3>插线，点「一键连接手机」</h3>
           <p>用 USB 线把手机接到电脑，打开 Amoo Bridge，点绿色按钮。手机上弹出「允许 USB 调试」时选允许。</p>
-          <p style="margin-top:10px">顶部出现「手机 已连接 · awake」，说明手机这头通了。</p>
+          <p>顶部出现「手机 已连接 · awake」，说明这头通了。</p>
         </article>
         <article class="step">
           <span class="num">STEP 02</span>
-          <h3>点「下一步：填模型」，复制三行</h3>
-          <p>窗口里会直接给出三行配置，复制它们：</p>
+          <h3>点「下一步：填模型」，抄下三行</h3>
+          <p>窗口里直接给出三个值，不用自己拼地址：</p>
           <div class="keys">
             <span class="key">Base URL</span>
             <span class="key">API Key</span>
@@ -517,12 +541,12 @@
         <article class="step">
           <span class="num">STEP 03</span>
           <h3>粘进客户端，发条消息</h3>
-          <p>在 Chatbox、Cherry Studio 或 WorkBuddy 里新建 OpenAI 兼容模型，粘贴三行，发一句话。</p>
-          <p style="margin-top:10px">收到回复就通了，之后窗口最小化到托盘就行。</p>
+          <p>在 Chatbox、Cherry Studio 或 WorkBuddy 里新建一个 OpenAI 兼容模型，把三行粘进去，发一句话。</p>
+          <p>收到回复就算通了，之后窗口最小化到托盘就行。</p>
         </article>
       </div>
 
-      <p class="tip">卡住了就点窗口右上角的「不会用？看三步向导」，跟着重新走一遍。</p>
+      <p class="tip">十次里九次卡在第 1 步：手机没开 USB 调试，或者用的是只能充电的线。先确认这两件事，再点连接。</p>
     </div>
   </section>
 
@@ -531,29 +555,29 @@
     <div class="wrap">
       <div class="sec-head">
         <h2>界面长这样</h2>
-        <p>没有多余的东西：左边切页面，右边是当前页要做的事。</p>
+        <p>没有多余的东西：左边切页面，右边只放当前这页要做的事。</p>
       </div>
       <div class="grid-shots">
         <figure class="shot">
           <div class="shot-frame">
-            <img src="assets/connect.png" alt="连接页：手机已连接、网关运行中" onerror="this.parentElement.classList.add('is-missing')">
+            <img src="assets/connect.png" alt="连接页：手机已连接、网关运行中" onerror="this.parentElement.classList.add('is-missing')" loading="lazy">
             <div class="shot-fallback"><span>截图待补</span><code>assets/connect.png</code></div>
           </div>
           <figcaption><b>连接页</b>手机和网关的状态都在这页，绿点表示正常。</figcaption>
         </figure>
         <figure class="shot">
           <div class="shot-frame">
-            <img src="assets/model.png" alt="模型页：Base URL、API Key、模型名三行配置" onerror="this.parentElement.classList.add('is-missing')">
+            <img src="assets/model.png" alt="模型页：Base URL、API Key、模型名三行配置" onerror="this.parentElement.classList.add('is-missing')" loading="lazy">
             <div class="shot-fallback"><span>截图待补</span><code>assets/model.png</code></div>
           </div>
-          <figcaption><b>模型页</b>三行配置在这里复制，直接粘进客户端。</figcaption>
+          <figcaption><b>模型页</b>三行配置在这里，直接粘进客户端。</figcaption>
         </figure>
         <figure class="shot">
           <div class="shot-frame">
-            <img src="assets/settings.png" alt="设置页：启动与端口选项" onerror="this.parentElement.classList.add('is-missing')">
+            <img src="assets/settings.png" alt="设置页：启动与端口选项" onerror="this.parentElement.classList.add('is-missing')" loading="lazy">
             <div class="shot-fallback"><span>截图待补</span><code>assets/settings.png</code></div>
           </div>
-          <figcaption><b>设置页</b>启动方式与端口设置，按需调整。</figcaption>
+          <figcaption><b>设置页</b>启动方式与端口，按需调整。</figcaption>
         </figure>
       </div>
     </div>
@@ -563,8 +587,8 @@
   <section id="get">
     <div class="wrap">
       <div class="sec-head">
-        <h2>怎么拿到 Amoo Bridge</h2>
-        <p>源码和安装包不公开，安装包按订单人工发放。流程不复杂，就是人工核验这一步。</p>
+        <h2>¥14.9，一次付费</h2>
+        <p>没有订阅，不按次计费。源码和安装包不公开，付款后人工核验，用邮件发出。</p>
       </div>
 
       <div class="buy-panel">
@@ -572,15 +596,15 @@
           <ol class="get-list">
             <li>
               <h3>扫码支付 ¥14.9</h3>
-              <p>用微信或支付宝扫码，付款时备注你的邮箱。</p>
+              <p>微信或支付宝扫码，付款时在备注里写上你的邮箱。</p>
             </li>
             <li>
               <h3>发邮件确认</h3>
-              <p>付款后发邮件到 <a class="mail" href="mailto:matreshka999@icloud.com">matreshka999@icloud.com</a>，附交易号（文字）、金额、付款时间和截图。</p>
+              <p>发到 <a class="mail" href="mailto:matreshka999@icloud.com">matreshka999@icloud.com</a>，主题写 <code>[Amoo Bridge] 已付款</code>，正文附交易号（贴文字，别只发截图）、金额与付款时间。</p>
             </li>
             <li>
-              <h3>收下载链接</h3>
-              <p>工作日 24 小时内、周末与节假日 48 小时内人工核验；通过后发下载链接、SHA-256 和安装说明。</p>
+              <h3>收安装包</h3>
+              <p>工作日 24 小时内、周末与节假日 48 小时内回信，附下载链接、SHA-256 和安装说明。超过这个时间没收到，直接回信催一次，附上交易号即可。</p>
             </li>
           </ol>
 
@@ -593,20 +617,60 @@
         </div>
 
         <aside class="pay-panel">
-          <div class="pay-price"><strong>¥14.9</strong><span>发售价<br>个人使用</span></div>
+          <div class="pay-price"><strong>¥14.9</strong><span>一次付费<br>个人使用</span></div>
           <div class="pay-codes">
             <figure>
-              <img src="assets/pay-wechat.png" alt="微信支付收款码" width="180" height="180">
+              <img src="assets/pay-wechat.png" alt="微信支付收款码" width="180" height="180" loading="lazy">
               <figcaption>微信支付<a href="assets/pay-wechat.png" target="_blank" rel="noopener">点击放大</a></figcaption>
             </figure>
             <figure>
-              <img src="assets/pay-alipay.png" alt="支付宝收款码" width="180" height="180">
+              <img src="assets/pay-alipay.png" alt="支付宝收款码" width="180" height="180" loading="lazy">
               <figcaption>支付宝<a href="assets/pay-alipay.png" target="_blank" rel="noopener">点击放大</a></figcaption>
             </figure>
           </div>
           <p class="pay-note">付款备注邮箱；付完发邮件确认。手机端可长按二维码识别。</p>
           <a class="btn btn-primary pay-btn" href="mailto:matreshka999@icloud.com?subject=%5BAmoo%20Bridge%5D%20%E5%B7%B2%E4%BB%98%E6%AC%BE">已付款，发邮件</a>
         </aside>
+      </div>
+
+      <div class="notice">
+        <b>第一次运行会提示「未知发布者」，这是正常的</b>
+        <p>安装包还没做代码签名，Windows 会弹一个来源不明的提示，不是文件被改过。回信里附的 SHA-256 可以自己比对一遍：<code>certutil -hashfile 安装包.exe SHA256</code>。</p>
+        <p>反过来说，如果提示里写的是某个具体公司名，而不是「未知发布者」，请先停下来回信确认。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- about -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>关于这个软件</h2>
+        <p>有些话写在前面，省得彼此误会。</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <h3>性质</h3>
+          <p>独立第三方工具，不是 Amoo 官方产品，与官方没有隶属、合作或背书关系。</p>
+        </article>
+        <article class="card">
+          <h3>许可与版本</h3>
+          <p>闭源付费，买的是个人使用许可。当前 v3.7.3，改动都记在 GitHub 的提交记录里。</p>
+        </article>
+        <article class="card">
+          <h3>换客户端不用换工具</h3>
+          <p>走的是 OpenAI 兼容标准。今天用 Chatbox，明天换 Cursor，这套配置照样能用。</p>
+        </article>
+      </div>
+
+      <div class="prep">
+        <b>已知限制</b>
+        <ul>
+          <li>只支持 Windows 10 / 11 64 位，Mac 与 Linux 没有时间表</li>
+          <li>无线模式会掉线，日常建议插线</li>
+          <li>手机端必须开 USB 调试，只能充电的线不行</li>
+          <li>安装包未签名，首次运行会提示「未知发布者」</li>
+        </ul>
       </div>
     </div>
   </section>
@@ -616,39 +680,52 @@
     <div class="wrap">
       <div class="sec-head">
         <h2>上手前，先看这几条</h2>
+        <p>按你最可能担心的顺序排的。</p>
       </div>
       <div class="faq-list">
         <details open>
           <summary>需要会写代码吗？</summary>
-          <p>不需要。装好打开，按「三步向导」点下去就行，全程没有命令行。</p>
+          <p>不需要。装好打开，按「三步向导」点下去就行，全程没有命令行，也不用编辑配置文件。</p>
         </details>
         <details>
-          <summary>MCP 是什么？必须开吗？</summary>
-          <p>MCP 是进阶功能，给需要接入外部工具的人用。普通聊天完全不需要，界面里默认收起。</p>
+          <summary>支持哪些客户端？</summary>
+          <p>凡是支持 OpenAI 兼容接口的工具都能用。常见的有 Cherry Studio、Chatbox、NextChat、LobeChat、沉浸式翻译、Cursor、VS Code（Cline / Continue）、Obsidian 插件。填的都是同样三行：Base URL、API Key、模型名。</p>
         </details>
         <details>
-          <summary>支持 Mac 或 Linux 吗？</summary>
-          <p>当前版本只支持 Windows 10 / 11 64 位。</p>
+          <summary>会不会影响我 Amoo 的账号？</summary>
+          <p>这个工具不登录你的 Amoo 账号，也不修改 Amoo 本身，只在你本机把客户端发出的请求经 USB 转给手机上的 Amoo。它不绕过任何额度或付费机制。至于这样做是否合规，取决于 Amoo 的使用条款，我们不做承诺，你可以自己判断。</p>
+        </details>
+        <details>
+          <summary>我的对话会经过你们的服务器吗？</summary>
+          <p>不会。网关只监听本机，请求经 USB 直接到手机。我们没有可以中转的服务器，也看不到你的对话内容。</p>
         </details>
         <details>
           <summary>手机一定要用线连着吗？</summary>
-          <p>默认走数据线，最稳；线必须能传数据，只能充电的不行。想在局域网里用无线，可以在「高级设置」里取消「只用数据线」，按说明连一次无线调试；无线会掉线，日常还是建议插线。</p>
+          <p>默认走数据线，最稳；线必须能传数据，只能充电的不行。想在局域网里用无线，可以在「高级设置」取消「只用数据线」，按说明连一次无线调试；无线会掉线，日常还是建议插线。</p>
         </details>
         <details>
           <summary>连接断了怎么办？</summary>
-          <p>桌面端会自动重连。如果一直连不上，重新插一下数据线，或到「诊断」页看看状态。</p>
+          <p>会自动重连。一直连不上，就重新插一下线，或者到「诊断」页看状态。</p>
         </details>
         <details>
           <summary>端口被占用了怎么办？</summary>
           <p>不用管，程序会自动换一个可用端口。</p>
         </details>
         <details>
-          <summary>支持哪些客户端？</summary>
-          <p>凡是支持 OpenAI 兼容接口的客户端都可以，例如 Chatbox、Cherry Studio、WorkBuddy。填的都是同样三行：Base URL、API Key、模型名。</p>
+          <summary>支持 Mac 或 Linux 吗？</summary>
+          <p>当前版本只支持 Windows 10 / 11 64 位，其他平台还在评估。</p>
+        </details>
+        <details>
+          <summary>¥14.9 值不值？</summary>
+          <p>如果你每天在电脑前用 AI，又常常为了问一句话去摸手机，值。如果你一周用不了几次，或者手机上问就够了，那这钱可以省下来，不用买。</p>
+        </details>
+        <details>
+          <summary>以后不更新了怎么办？</summary>
+          <p>接口走的是 OpenAI 兼容标准，客户端换了你不用换工具；手机端要是改了，会先在提交记录里说明。风险没法承诺为零，但这一层做得很薄，真出问题改动也小。</p>
         </details>
         <details>
           <summary>为什么下载不到安装包？</summary>
-          <p>源码和安装包不公开，按订单人工发放。按上面「获取软件」发邮件即可。</p>
+          <p>源码和安装包不公开，按订单人工发放。按上面「获取软件」扫码付款后发邮件确认即可。</p>
         </details>
       </div>
     </div>
@@ -665,15 +742,16 @@
           </span>
           Amoo Bridge
         </div>
-        <p>把手机上的 Amoo 接到 Windows 电脑。<br>当前版本 v3.7.3 · Windows 10 / 11 64 位</p>
+        <p>让电脑上的客户端，用上手机里的 Amoo。<br>当前版本 v3.7.3 · Windows 10 / 11 64 位</p>
       </div>
       <div>
         <h4>页面</h4>
-        <p><a href="#features">功能</a><br><a href="#steps">三步开始</a><br><a href="#shots">界面</a><br><a href="#faq">常见问题</a></p>
+        <p><a href="#why">为什么需要</a><br><a href="#features">功能</a><br><a href="#steps">三步开始</a><br><a href="#shots">界面</a><br><a href="#about">关于</a><br><a href="#faq">常见问题</a></p>
       </div>
       <div>
         <h4>联系与许可</h4>
         <p>获取软件、问题反馈：<br><a href="mailto:matreshka999@icloud.com">matreshka999@icloud.com</a></p>
+        <p>更新记录：<a href="https://github.com/matreshka15/amoo-bridge-site/commits/main">GitHub 提交历史</a><br>问题反馈：<a href="https://github.com/matreshka15/amoo-bridge-site/issues">Issues</a></p>
         <p>付费软件，源码与安装包不公开。购买后获得个人使用许可，请勿转发或转售。</p>
       </div>
     </div>
