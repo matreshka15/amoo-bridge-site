@@ -154,7 +154,7 @@ certutil -hashfile 安装包.exe SHA256
 
 这是第三方工具，不是 Amoo 官方产品，跟官方没有隶属、合作或背书关系。它不改 Amoo 本身，也不绕过账号、额度和付费机制，更不提供模型，只把本机到手机这一段打通。
 
-软件闭源，源码和安装包都不公开，买的是个人使用许可。当前版本 v3.7.3，改动记在 [Releases](https://github.com/ratz0/amoo-bridge-site/releases) 里。
+软件闭源，源码和安装包都不公开，买的是个人使用许可。当前版本 v3.7.3，改动记在[提交历史](https://github.com/matreshka15/amoo-bridge-site/commits/main)里。
 
 接口用的是 OpenAI 兼容标准，所以你换客户端，不用换工具。
 
@@ -168,8 +168,8 @@ certutil -hashfile 安装包.exe SHA256
 **找谁**
 
 - 订单、付款、安装包：`matreshka999@icloud.com`
-- Bug 和功能建议：[Issues](https://github.com/ratz0/amoo-bridge-site/issues)
-- 使用问题、经验交流：[Discussions](https://github.com/ratz0/amoo-bridge-site/discussions)
+- Bug 和功能建议：[Issues](https://github.com/matreshka15/amoo-bridge-site/issues)
+- 使用问题、经验交流：[Discussions](https://github.com/matreshka15/amoo-bridge-site/discussions)
 
 ## 常见问题
 
@@ -223,7 +223,7 @@ certutil -hashfile 安装包.exe SHA256
 
 **会不会以后不更新了，或者哪天线就断了？**
 
-接口走的是 OpenAI 兼容标准：客户端换了你不用换工具；手机端要是改了，会先在 Releases 里说明。风险没法承诺为零，但这一层做得很薄，真出问题改动也小。
+接口走的是 OpenAI 兼容标准：客户端换了你不用换工具；手机端要是改了，会先在提交记录里说明。风险没法承诺为零，但这一层做得很薄，真出问题改动也小。
 
 **订单与安装问题发在哪？**
 
