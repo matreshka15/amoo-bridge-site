@@ -9,7 +9,7 @@
 <p>请求经 USB 进手机，额度仍从手机扣，电脑用多少手机扣多少。它不登录账号，也不改 Amoo。</p>
 
 <p>
-  <img alt="version" src="https://img.shields.io/badge/version-3.7.3-2F6B4F?style=flat-square">
+  <img alt="version" src="https://img.shields.io/badge/version-3.7.4-2F6B4F?style=flat-square">
   <img alt="platform" src="https://img.shields.io/badge/Windows%2010%20%2F%2011%20x64-2F6B4F?style=flat-square">
   <img alt="license" src="https://img.shields.io/badge/license-Personal-6B5F55?style=flat-square">
 </p>
@@ -159,7 +159,7 @@ MCP 也是可选的，接外部工具时才用得上。界面里默认收起，�
 
 这是第三方工具，不是 Amoo 官方产品，跟官方没有隶属、合作或授权关系。名字里带 Amoo，只是说明它给谁用。它不改 Amoo 本身，也不绕过账号、额度和付费机制，更不提供模型，只把本机到手机这一段打通。
 
-软件闭源，源码和安装包都不公开，买的是个人使用许可。当前版本 v3.7.3，改动记在[提交历史](https://github.com/matreshka15/amoo-bridge-site/commits/main)里。
+软件闭源，源码和安装包都不公开，买的是个人使用许可。当前版本 v3.7.4，改动记在[提交历史](https://github.com/matreshka15/amoo-bridge-site/commits/main)里。
 
 装不上、用起来有问题，回信说一声，能找着人。
 
